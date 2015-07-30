@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-include __DIR__.'/authenticated_web_service.php';
+require_once __DIR__.'/authenticated_web_service.php';
 
 class CMISService extends AuthenticatedWebService
 {
@@ -180,7 +180,15 @@ class CMISService extends AuthenticatedWebService
 		return $this->doRequest($url);
 	}
 
-	public function getRenditions($objectId) { throw new Exception('methodNotImplemented'); }
+	public function getRenditions($objectId)
+	{
+        $params = ['cmisselector'=>'renditions', 'objectId'=>$objectId, 'renditionFilter'=>'*'];
+        if ($this->succinct) { $params['succinct'] = 'true'; }
+
+        $url = $this->rootFolderUrl.'?'.http_build_query($params, null, self::ARG_SEPARATOR);
+        return $this->doJSONRequest($url);
+    }
+
 	public function updateProperties($objectId, $properties) { throw new Exception('methodNotImplemented'); }
 	public function bulkUpdateProperties($objects) { throw new Exception('methodNotImplemented'); }
 	public function moveObject($objectId, $targetFolderId, $sourceFolderId) { throw new Exception('methodNotImplemented'); }

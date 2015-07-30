@@ -19,6 +19,8 @@ class AuthenticatedWebService
         curl_setopt($session, CURLOPT_HEADER,         false);
         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($session, CURLOPT_TIMEOUT,        3);
+
         if (substr($url, 0, 5) == 'https') {
             curl_setopt($session, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
