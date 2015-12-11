@@ -124,7 +124,21 @@ class CMISService extends AuthenticatedWebService
 	}
 
 	public function getDescendants($folderId) { throw new Exception('methodNotImplemented'); }
-	public function getFolderTree($folderId) { throw new Exception('methodNotImplemented'); }
+
+	/**
+	 * @param string $folderId
+	 * @param int $depth
+	 */
+	public function getFolderTree($folderId, $depth=1)
+	{
+        $params = ['objectId'=>$folderId, 'cmisaction'=>'getFolderTree', 'depth'=>$depth];
+        if ($this->succinct) { $params['succinct'] = 'true'; }
+
+		$url = $this->rootFolderUrl.'?'.http_build_query($params, null, self::ARG_SEPARATOR);
+
+		return $this->doJSONRequest($url);
+    }
+
 	public function getObjectParents($objectId) { throw new Exception('methodNotImplemented'); }
 	public function getCheckedOutDocs($folderId=null) { throw new Exception('methodNotImplemented'); }
 
